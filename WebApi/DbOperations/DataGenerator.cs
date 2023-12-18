@@ -19,7 +19,7 @@ namespace WebApi.DbOperations
 
                     new Book
                     {
-                        Id = 1,
+                        //Id = 1,
                         Tite = "Lean Startup",
                         GenreId = 1, // Personel Growth
                         PageCount = 200,
@@ -27,7 +27,7 @@ namespace WebApi.DbOperations
                     },
                     new Book
                     {
-                        Id = 2,
+                        //Id = 2,
                         Tite = "Herland",
                         GenreId = 2, // Science Fiction
                         PageCount = 250,
@@ -35,7 +35,7 @@ namespace WebApi.DbOperations
                     },
                     new Book
                     {
-                        Id = 3,
+                        //Id = 3,
                         Tite = "Dune",
                         GenreId = 2, // Science Fiction
                         PageCount = 540,

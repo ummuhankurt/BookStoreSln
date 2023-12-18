@@ -1,7 +1,10 @@
-﻿namespace WebApi.Entity
+﻿using System.ComponentModel.DataAnnotations.Schema;
+
+namespace WebApi.Entity
 {
     public class Book
     {
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
         public string Tite { get; set; }
         public int GenreId { get; set; }
