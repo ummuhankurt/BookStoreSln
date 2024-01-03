@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using WebApi.BookOperations.GetBooks;
 using WebApi.DbOperations;
 using WebApi.Entity;
 
@@ -44,11 +45,12 @@ namespace WebApi.Controllers
             _dbContext = dbContext;
         }
 
-        [HttpGet]
-        public List<Book> GetBooks()
+        [HttpGet] 
+        public IActionResult GetBooks()
         {
-            var bookList = _dbContext.Books.OrderBy(x => x.Id).ToList<Book>();
-            return bookList;
+            GetBoksQuery query = new GetBoksQuery(_dbContext);
+            var result = query.Handle();
+            return Ok(result);
         }
 
         [HttpGet("{id}")]
@@ -68,7 +70,7 @@ namespace WebApi.Controllers
         [HttpPost]
         public IActionResult Add([FromBody] Book newBook)
         {
-            var book = _dbContext.Books.SingleOrDefault(book => book.Tite == newBook.Tite);
+            var book = _dbContext.Books.SingleOrDefault(book => book.Title == newBook.Title);
             if (book is not null)
                 return BadRequest("Böyle bir kitap zaten mevcut.");
             _dbContext.Books.Add(newBook);
@@ -82,7 +84,7 @@ namespace WebApi.Controllers
             if (book is null)
                 return BadRequest("Böyle bir kitap yok.");
 
-            book.Tite = updatedBook.Tite != default ? updatedBook.Tite : book.Tite;
+            book.Title = updatedBook.Title != default ? updatedBook.Title : book.Title;
             book.GenreId = updatedBook.GenreId != default ? updatedBook.GenreId : book.GenreId;
             book.PageCount = updatedBook.PageCount != default ? updatedBook.PageCount : book.PageCount;
             book.PublishDate = updatedBook.PublishDate != default ? updatedBook.PublishDate : book.PublishDate;

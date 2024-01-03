@@ -20,7 +20,7 @@ namespace WebApi.DbOperations
                     new Book
                     {
                         //Id = 1,
-                        Tite = "Lean Startup",
+                        Title = "Lean Startup",
                         GenreId = 1, // Personel Growth
                         PageCount = 200,
                         PublishDate = new DateTime(2001, 06, 12)
@@ -28,7 +28,7 @@ namespace WebApi.DbOperations
                     new Book
                     {
                         //Id = 2,
-                        Tite = "Herland",
+                        Title = "Herland",
                         GenreId = 2, // Science Fiction
                         PageCount = 250,
                         PublishDate = new DateTime(2010, 05, 23)
@@ -36,7 +36,7 @@ namespace WebApi.DbOperations
                     new Book
                     {
                         //Id = 3,
-                        Tite = "Dune",
+                        Title = "Dune",
                         GenreId = 2, // Science Fiction
                         PageCount = 540,
                         PublishDate = new DateTime(2001, 12, 21)
