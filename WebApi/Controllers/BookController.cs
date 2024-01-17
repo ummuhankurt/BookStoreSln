@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using WebApi.BookOperations.CreateBook;
 using WebApi.BookOperations.GetBooks;
+using WebApi.BookOperations.UpdateBook;
 using WebApi.DbOperations;
 using WebApi.Entity;
 
@@ -48,49 +50,60 @@ namespace WebApi.Controllers
         [HttpGet] 
         public IActionResult GetBooks()
         {
-            GetBoksQuery query = new GetBoksQuery(_dbContext);
+            GetBooksQuery query = new GetBooksQuery(_dbContext);
             var result = query.Handle();
             return Ok(result);
         }
 
         [HttpGet("{id}")]
-        public Book GetById(int id)
+        public GetByIdViewModel GetById(int id)
         {
-            var book = _dbContext.Books.Where(book => book.Id == id).SingleOrDefault();
-            return book;
+            try
+            {
+                GetBookById getBookById = new GetBookById(_dbContext);
+                return getBookById.Handle(id);
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+            
         }
 
-        //[HttpGet]
-        //public Book GetById([FromQuery] string id)
-        //{
-        //    var book = BookList.Where(book => book.Id == Convert.ToInt32(id)).SingleOrDefault();
-        //    return book;
-        //}
 
         [HttpPost]
-        public IActionResult Add([FromBody] Book newBook)
+        public IActionResult Add([FromBody] CreateBookModel newBook) 
         {
-            var book = _dbContext.Books.SingleOrDefault(book => book.Title == newBook.Title);
-            if (book is not null)
-                return BadRequest("Böyle bir kitap zaten mevcut.");
-            _dbContext.Books.Add(newBook);
-            _dbContext.SaveChanges();
-            return Ok("Başarılı.");
+            CreateBookCommand createBookCommand = new CreateBookCommand(_dbContext);
+            try
+            {
+                createBookCommand.Model = newBook;
+                createBookCommand.Handle();
+            }
+            catch (Exception ex)
+            {
+
+                return BadRequest(ex.Message);
+            }
+            
+            return Ok(newBook.Title + " başarılı bir şekilde eklendi");
         }
         [HttpPut("{id}")]
-        public IActionResult Update(int id, [FromBody] Book updatedBook)
+        public IActionResult Update(int id, [FromBody] UpdateBookModel updatedBook)
         {
-            var book = _dbContext.Books.SingleOrDefault(book => book.Id == id);
-            if (book is null)
-                return BadRequest("Böyle bir kitap yok.");
+            UpdateBookCommand updateBookCommand = new UpdateBookCommand(_dbContext);
+            try
+            {
+                updateBookCommand.Model = updatedBook;
+                updateBookCommand.Handle(id);
+            }
+            catch (Exception ex)
+            {
 
-            book.Title = updatedBook.Title != default ? updatedBook.Title : book.Title;
-            book.GenreId = updatedBook.GenreId != default ? updatedBook.GenreId : book.GenreId;
-            book.PageCount = updatedBook.PageCount != default ? updatedBook.PageCount : book.PageCount;
-            book.PublishDate = updatedBook.PublishDate != default ? updatedBook.PublishDate : book.PublishDate;
-            _dbContext.SaveChanges();
-            return Ok("Kitap güncellendi");
-
+                return BadRequest(ex.Message);
+            }
+            return Ok("Kitap başarılı bir şekilde güncellendi");
         }
         [HttpDelete("{id}")]
         public IActionResult Delete(int id)

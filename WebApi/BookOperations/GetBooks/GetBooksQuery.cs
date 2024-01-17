@@ -4,10 +4,10 @@ using WebApi.Entity;
 
 namespace WebApi.BookOperations.GetBooks
 {
-    public class GetBoksQuery
+    public class GetBooksQuery
     {
         private readonly BookStoreDbContext _bookStoreDbContext;
-        public GetBoksQuery(BookStoreDbContext bookStoreDbContext)
+        public GetBooksQuery(BookStoreDbContext bookStoreDbContext)
         {
             _bookStoreDbContext = bookStoreDbContext;
         }
@@ -21,6 +21,7 @@ namespace WebApi.BookOperations.GetBooks
                 wm.Add(
                     new BooksViewModel
                     {
+                        Id = book.Id,
                         Title = book.Title,
                         PublishDate = book.PublishDate.Date.ToString("dd/MM/yyyy"),
                         PageCount = book.PageCount,
@@ -33,6 +34,7 @@ namespace WebApi.BookOperations.GetBooks
     }
     public class BooksViewModel
     {
+        public int Id { get; set; }
         public string Title { get; set; }
         public int PageCount { get; set; }
         public string PublishDate { get; set; }
