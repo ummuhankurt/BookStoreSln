@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using WebApi.BookOperations.CreateBook;
+using WebApi.BookOperations.DeleteBook;
+using WebApi.BookOperations.GetBookDetail;
 using WebApi.BookOperations.GetBooks;
 using WebApi.BookOperations.UpdateBook;
 using WebApi.DbOperations;
@@ -56,19 +58,21 @@ namespace WebApi.Controllers
         }
 
         [HttpGet("{id}")]
-        public GetByIdViewModel GetById(int id)
+        public IActionResult GetById(int id)
         {
+            GetByIdViewModel result;
             try
             {
-                GetBookById getBookById = new GetBookById(_dbContext);
-                return getBookById.Handle(id);
+                GetBookDetailQuery getBookById = new GetBookDetailQuery(_dbContext);
+                getBookById.BookId = id;
+                result = getBookById.Handle();
             }
-            catch (Exception)
+            catch (Exception ex)
             {
 
-                throw;
+                return BadRequest(ex.Message);  
             }
-            
+            return Ok(result);  
         }
 
 
@@ -89,14 +93,15 @@ namespace WebApi.Controllers
             
             return Ok(newBook.Title + " başarılı bir şekilde eklendi");
         }
-        [HttpPut("{id}")]
+        [HttpPut("{id}")] 
         public IActionResult Update(int id, [FromBody] UpdateBookModel updatedBook)
         {
             UpdateBookCommand updateBookCommand = new UpdateBookCommand(_dbContext);
             try
             {
                 updateBookCommand.Model = updatedBook;
-                updateBookCommand.Handle(id);
+                updateBookCommand.BookId = id;
+                updateBookCommand.Handle();
             }
             catch (Exception ex)
             {
@@ -108,11 +113,18 @@ namespace WebApi.Controllers
         [HttpDelete("{id}")]
         public IActionResult Delete(int id)
         {
-            var book = _dbContext.Books.SingleOrDefault(book => book.Id == id);
-            if (book is null)
-                return BadRequest("Böyle bir kitap bulunamadı");
-            _dbContext.Books.Remove(book);
-            _dbContext.SaveChanges();
+            DeleteBookCommand deleteBookCommand = new DeleteBookCommand(_dbContext);
+            try
+            {
+                deleteBookCommand.BookId = id;
+                deleteBookCommand.Handle();
+            }
+            catch (Exception ex)
+            {
+
+                return BadRequest(ex.Message);
+            }
+           
             return Ok("Kitap Silindi.");
         }
     }
