@@ -2,6 +2,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection; // Servisleri eklemeyi unutmayýn
 using System.Reflection;
 using WebApi.DbOperations;
+using WebApi.Middlewares;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -40,6 +41,10 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 
 app.UseAuthorization();
+
+app.UseCustomExceptionMiddleware();
+
+
 
 app.MapControllers();
 

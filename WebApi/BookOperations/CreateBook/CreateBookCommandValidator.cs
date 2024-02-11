@@ -10,7 +10,7 @@ namespace WebApi.BookOperations.CreateBook
             RuleFor(command => command.GenreId).GreaterThan(0);
             RuleFor(command => command.PageCount).GreaterThan(0);
             RuleFor(command => command.PublishDate.Date).NotEmpty().LessThan(DateTime.Now.Date);
-            RuleFor(command => command.Title).NotEmpty().MinimumLength(4);
+            RuleFor(command => command.Title).NotNull();
 
 
         }
