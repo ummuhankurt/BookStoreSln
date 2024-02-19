@@ -1,15 +1,16 @@
 ﻿using AutoMapper;
+using Microsoft.EntityFrameworkCore;
 using WebApi.Common;
 using WebApi.DbOperations;
 using WebApi.Entity;
 
-namespace WebApi.BookOperations.GetBooks
+namespace WebApi.Application.BookOperations.Queries.GetBooks
 {
     public class GetBooksQuery
     {
         private readonly BookStoreDbContext _bookStoreDbContext;
         private readonly IMapper _mapper;
-        public GetBooksQuery(BookStoreDbContext bookStoreDbContext,IMapper mapper)
+        public GetBooksQuery(BookStoreDbContext bookStoreDbContext, IMapper mapper)
         {
             _bookStoreDbContext = bookStoreDbContext;
             _mapper = mapper;
@@ -17,8 +18,8 @@ namespace WebApi.BookOperations.GetBooks
 
         public List<BooksViewModel> Handle()
         {
-            var bookList = _bookStoreDbContext.Books.OrderBy(x => x.Id).ToList();
-            List<BooksViewModel> wm = _mapper.Map<List<BooksViewModel>>(bookList); 
+            var bookList = _bookStoreDbContext.Books.Include(x => x.Genre).OrderBy(x => x.Id).ToList();
+            List<BooksViewModel> wm = _mapper.Map<List<BooksViewModel>>(bookList);
             return wm;
         }
     }

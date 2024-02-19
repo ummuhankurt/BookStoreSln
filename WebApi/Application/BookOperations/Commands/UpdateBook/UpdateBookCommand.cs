@@ -1,6 +1,6 @@
 ﻿using WebApi.DbOperations;
 
-namespace WebApi.BookOperations.UpdateBook
+namespace WebApi.Application.BookOperations.Commands.UpdateBook
 {
     public class UpdateBookCommand
     {
@@ -28,6 +28,6 @@ namespace WebApi.BookOperations.UpdateBook
     {
         public string Title { get; set; }
         public int GenreId { get; set; }
-        
+
     }
 }

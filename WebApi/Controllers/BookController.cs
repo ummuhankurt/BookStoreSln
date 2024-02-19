@@ -3,14 +3,15 @@ using FluentValidation;
 using FluentValidation.Results;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using WebApi.BookOperations.CreateBook;
-using WebApi.BookOperations.DeleteBook;
-using WebApi.BookOperations.GetBookDetail;
-using WebApi.BookOperations.GetBooks;
-using WebApi.BookOperations.UpdateBook;
+using WebApi.Application.BookOperations.Commands.CreateBook;
+using WebApi.Application.BookOperations.Commands.DeleteBook;
+using WebApi.Application.BookOperations.Commands.UpdateBook;
+using WebApi.Application.BookOperations.Queries.GetBookDetail;
+using WebApi.Application.BookOperations.Queries.GetBooks;
 using WebApi.DbOperations;
 using WebApi.Entity;
-using static WebApi.BookOperations.CreateBook.CreateBookCommand;
+using WebApi.Services;
+using static WebApi.Application.BookOperations.Commands.CreateBook.CreateBookCommand;
 
 namespace WebApi.Controllers
 {
@@ -49,10 +50,12 @@ namespace WebApi.Controllers
         //};
         private readonly BookStoreDbContext _dbContext;
         private readonly IMapper _mapper;
+        
         public BookController(BookStoreDbContext dbContext, IMapper mapper)
         {
             _dbContext = dbContext;
             _mapper = mapper;
+
         }
 
         [HttpGet]
