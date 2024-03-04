@@ -56,6 +56,32 @@ namespace WebApi.DbOperations
                         PublishDate = new DateTime(2001, 12, 21)
                     }
                 );
+
+                context.Authors.AddRange
+                (
+                    new Author
+                    {
+                        Name = "Eric",
+                        Surname = "Reis",
+                        DateOfBirth = new DateTime(1978,9,22),
+                        BookId = 1,
+                    },
+                    new Author
+                    {
+                        Name = "Charlotte",
+                        Surname = "Perkins Gilman",
+                        DateOfBirth = new DateTime(1860, 8, 17),
+                        BookId= 2,
+                    },
+                    new Author
+                    {
+                        Name = "Frank",
+                        Surname = "Herbert",
+                        DateOfBirth= new DateTime(1920,9,8),
+                        BookId = 3
+                    }
+                );
+
                 context.SaveChanges();
             }
         }
