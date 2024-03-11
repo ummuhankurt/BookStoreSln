@@ -48,7 +48,7 @@ namespace WebApi.Controllers
         //    }
 
         //};
-        private readonly BookStoreDbContext _dbContext;
+        private readonly IBookStoreDbContext _dbContext;
         private readonly IMapper _mapper;
         
         public BookController(BookStoreDbContext dbContext, IMapper mapper)
@@ -85,7 +85,7 @@ namespace WebApi.Controllers
             CreateBookCommand createBookCommand = new CreateBookCommand(_dbContext, _mapper);
             createBookCommand.Model = newBook;
             CreateBookCommandValidator validator = new CreateBookCommandValidator();
-            validator.ValidateAndThrow(createBookCommand.Model);
+            validator.ValidateAndThrow(createBookCommand);
             createBookCommand.Handle();
             return Ok(newBook.Title + " başarılı bir şekilde eklendi");
         }

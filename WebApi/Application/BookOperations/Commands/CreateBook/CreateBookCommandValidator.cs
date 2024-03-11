@@ -3,14 +3,14 @@ using static WebApi.Application.BookOperations.Commands.CreateBook.CreateBookCom
 
 namespace WebApi.Application.BookOperations.Commands.CreateBook
 {
-    public class CreateBookCommandValidator : AbstractValidator<CreateBookModel>
+    public class CreateBookCommandValidator : AbstractValidator<CreateBookCommand>
     {
         public CreateBookCommandValidator()
         {
-            RuleFor(command => command.GenreId).GreaterThan(0);
-            RuleFor(command => command.PageCount).GreaterThan(0);
-            RuleFor(command => command.PublishDate.Date).NotEmpty().LessThan(DateTime.Now.Date);
-            RuleFor(command => command.Title).NotNull();
+            RuleFor(command => command.Model.GenreId).GreaterThan(0);
+            RuleFor(command => command.Model.PageCount).GreaterThan(0);
+            RuleFor(command => command.Model.PublishDate.Date).NotEmpty().LessThan(DateTime.Now.Date);
+            RuleFor(command => command.Model.Title).NotNull();
                      
 
         }

@@ -6,10 +6,10 @@ namespace WebApi.Application.GenreOperations.Commands.CreateGenre
 {
     public class CreateGenreCommand
     {
-        public readonly BookStoreDbContext _context;
+        public readonly IBookStoreDbContext _context;
         public readonly IMapper _mapper;
         public CreateGenreModel Model { get; set; }
-        public CreateGenreCommand(BookStoreDbContext context, IMapper mapper)
+        public CreateGenreCommand(IBookStoreDbContext context, IMapper mapper)
         {
             _context = context;
             _mapper = mapper;
@@ -21,7 +21,7 @@ namespace WebApi.Application.GenreOperations.Commands.CreateGenre
             if(genre is not null)
                 throw new InvalidOperationException("Kitap türü zaten mevcut");
             genre = _mapper.Map<Genre>(Model);
-            _context.Add(genre);
+            _context.Genres.Add(genre);
             _context.SaveChanges();
         }
     }
